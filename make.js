@@ -30,12 +30,10 @@ function create() {
 
   fs.mkdirSync(dirPath);
 
-  const capitalizedClassName = className.toUpperCase()[0] + className.toLowerCase().slice(1);
-
   const exampleDirName = path.join('prep', 'example');
 
-  const classPath = path.join(dirPath, `${capitalizedClassName}.java`)
-  const classTestPath = path.join(dirPath, `${capitalizedClassName}Test.java`);
+  const classPath = path.join(dirPath, `${className}.java`)
+  const classTestPath = path.join(dirPath, `${className}Test.java`);
 
   fs.copyFileSync(
     path.join(exampleDirName, 'Example.java'),
@@ -50,13 +48,13 @@ function create() {
     classPath,
     fs.readFileSync(classPath, 'utf-8')
       .replace(/example/g, className.toLowerCase())
-      .replace(/Example/g, capitalizedClassName)
+      .replace(/Example/g, className)
   );
   fs.writeFileSync(
     classTestPath,
     fs.readFileSync(classTestPath, 'utf-8')
       .replace(/example/g, className.toLowerCase())
-      .replace(/Example/g, capitalizedClassName)
+      .replace(/Example/g, className)
   );
 }
 
