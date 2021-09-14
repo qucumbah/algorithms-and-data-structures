@@ -1,7 +1,7 @@
-import prep.vector.VectorTest;
+import prep.linkedlist.LinkedListTest;
 
 public class Main {
   public static void main(String[] args) {
-    new VectorTest().runTests();
+    new LinkedListTest().runTests();
   }
 }
