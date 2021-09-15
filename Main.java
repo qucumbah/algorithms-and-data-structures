@@ -1,7 +1,7 @@
-import prep.linkedlist.LinkedListTest;
+import prep.dequeue.DequeueTest;
 
 public class Main {
   public static void main(String[] args) {
-    new LinkedListTest().runTests();
+    new DequeueTest().runTests();
   }
 }
