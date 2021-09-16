@@ -1,6 +1,8 @@
 package prep.linkedlist;
 
 /**
+ * Singly-linked list without tail pointer
+ * 
  * Other ideas:
  * 1. List where size is stored as an int
  * 2. List with tail pointer

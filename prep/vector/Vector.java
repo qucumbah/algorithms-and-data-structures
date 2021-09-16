@@ -1,5 +1,8 @@
 package prep.vector;
 
+/**
+ * Based on dynamically resized array
+ */
 public class Vector<T extends Comparable<T>> {
   private T[] inner;
   private int nextItemIndex = 0;

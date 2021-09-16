@@ -1,6 +1,8 @@
 package prep.dequeue;
 
 /**
+ * Fixed-size array-based dequeue
+ * 
  * Ideas:
  * 1. Resize when needed
  */
