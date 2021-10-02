@@ -1,7 +1,7 @@
-import prep.dequeue.DequeueTest;
+import prep.hashtable.HashTableTest;
 
 public class Main {
   public static void main(String[] args) {
-    new DequeueTest().runTests();
+    new HashTableTest().runTests();
   }
 }
