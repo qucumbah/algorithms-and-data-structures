@@ -34,7 +34,7 @@ public class VectorTest extends Test {
     }
 
     assertEquals(v1.getCapacity(), 128, "Vector should have capacity of 128 after adding 128 elements");
-    assertEquals(v1.getSize(), 128, "Vector size should be 128 after adding 16 elements");
+    assertEquals(v1.getSize(), 128, "Vector size should be 128 after adding 128 elements");
 
     v1.push(0);
 
@@ -73,15 +73,17 @@ public class VectorTest extends Test {
 
   private void insertion() {
     var v = new Vector<Integer>();
-    for (int i = 0; i < 30; i += 1) {
+    for (int i = 0; i < 31; i += 1) {
       v.push(i);
     }
 
     v.insert(7, 15);
-    assertEquals(v.getSize(), 31, "Vector size should be 31 after inserting a new element");
+    assertEquals(v.getSize(), 32, "Vector size should be 32 after inserting a new element");
+    assertEquals(v.getCapacity(), 32, "Vector capacity should be 32");
     assertEquals(v.getItem(6), 6, "Vector items before the inserted one should stay untouched");
     assertEquals(v.getItem(7), 15, "Vector item should have been inserted");
     assertEquals(v.getItem(8), 7, "Vector items after the inserted one should have shifted");
+    assertEquals(v.getItem(31), 30, "Last vector item should be correct");
   }
 
   private void deletion() {
@@ -95,6 +97,7 @@ public class VectorTest extends Test {
     assertEquals(v1.getItem(6), 6, "Vector items before the deleted one should stay untouched");
     assertEquals(v1.getItem(7), 8, "Vector items should have been shifted");
     assertEquals(v1.getItem(8), 9, "Vector items should have been shifted");
+    assertEquals(v1.getItem(28), 29, "Vector items should have been shifted");
 
     try {
       v1.getItem(29);
@@ -115,6 +118,7 @@ public class VectorTest extends Test {
     assertEquals(v1.getItem(6), 6, "Vector items before the removed one should stay untouched");
     assertEquals(v1.getItem(7), 8, "Vector items should have been shifted");
     assertEquals(v1.getItem(8), 9, "Vector items should have been shifted");
+    assertEquals(v1.getItem(28), 29, "Vector items should have been shifted");
 
     try {
       v1.getItem(29);
