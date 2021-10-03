@@ -40,69 +40,30 @@ public class HashTable<K extends Comparable<K>, V> {
     resizeIfNeeded(size + 1);
 
     // High-level overview of the algorithm:
-    // We keep all keys sorted
-    // If we insert a new element, we:
-    // 1. If the element's place is empty, then just put it there
-    // 2. Otherwise look for two elements between which it should fit
+    // Insert the element if it's place is empty
+    // Otherwise go forward to find the first empty cell and put it there
+    // Since we've called `resizeIfNeeded(size + 1)` there is guaranteed to exist at least one empty cell
 
     int hashValue = hash(key);
     int positionToInsert = hashValue;
 
-    // Simple check
-    if (inner[positionToInsert] == null) {
-      inner[positionToInsert] = new Item(key, value);
-      size += 1;
-      return;
-    }
-
-    // Our place is taken; move along the array to find where the element should be inserted to
+    // Find the first empty cell or cell with equal value; put our item there
     while (true) {
-      // This means we've inserted a key which is larger than all keys already stored in this line
-      // This condition is bound to happen eventually even if the other one doesn't
+      // Adding an item; we are bound to hit this condition eventually since we've increased size
       if (inner[positionToInsert] == null) {
         inner[positionToInsert] = new Item(key, value);
         size += 1;
         return;
       }
 
-      // Check if we're in the right position
-      int curIndex = positionToInsert;
-      int prevIndex = getInBoundsIndex(curIndex - 1);
-      int curHash = hash(inner[curIndex].key);
-      int prevHash = hash(inner[prevIndex].key);
-
-      if (curHash < prevHash) {
-        curHash += getCapacity();
-      }
-
-      if (hashValue < curHash) {
-        hashValue += getCapacity();
-      }
-
-      if (hashValue > prevHash && hashValue <= curHash) {
-        // We've found the right position; now we just have to shift all the following elements one place to the right
-        shiftToTheRight(curIndex);
-
-        // And insert our element
-        inner[curIndex] = new Item(key, value);
+      // Replacing an item; size does not change
+      if (key.compareTo(inner[positionToInsert].key) == 0) {
+        inner[positionToInsert] = new Item(key, value);
         return;
       }
 
       positionToInsert = getInBoundsIndex(positionToInsert + 1);
     }
-  }
-
-  private void shiftToTheRight(int index) {
-    Item prev = inner[index];
-    inner[index] = null;
-    int curIndex = getInBoundsIndex(index + 1);
-    while (inner[curIndex] != null) {
-      Item cur = inner[curIndex];
-      inner[curIndex] = prev;
-      prev = cur;
-      curIndex = getInBoundsIndex(curIndex + 1);
-    }
-    inner[curIndex] = prev;
   }
 
   public V get(K key) {
@@ -126,6 +87,14 @@ public class HashTable<K extends Comparable<K>, V> {
   }
 
   public V remove(K key) {
+    // Overview:
+    // Go to the element's position and start going forward until we find the right element
+    // If we find an empty cell until the element, then we don't have this key in the table
+    // Otherwise we replace this cell with null. After that, we go forward until we find either:
+    // 1. Empty cell - stop
+    // 2. Item for which (item's hash value <= removed cell position)
+    // In this case we move the item to the removed position and repeat the cycle
+    V result = null;
     int hashValue = hash(key);
     int position = hashValue;
     while (true) {
@@ -134,41 +103,47 @@ public class HashTable<K extends Comparable<K>, V> {
       }
 
       if (inner[position].key.compareTo(key) == 0) {
-        V result = inner[position].value;
+        result = inner[position].value;
         inner[position] = null;
-        shiftToTheLeft(getInBoundsIndex(position + 1));
-
-        size -= 1;
-        resizeIfNeeded(size);
-        return result;
+        break;
       }
 
       position = getInBoundsIndex(position + 1);
 
+      // If we've gone the full circle, the item does not exist
       if (position == hashValue) {
         return null;
       }
     }
-  }
 
-  private void shiftToTheLeft(int index) {
-    int curIndex = index;
+    size -= 1;
+    boolean resized = resizeIfNeeded(size);
+
+    if (resized) {
+      return result;
+    }
+
+    int start = position;
+    int cur = getInBoundsIndex(start + 1);
     while (true) {
-      if (inner[curIndex] == null) {
-        return;
+      if (inner[cur] == null) {
+        return result;
       }
 
-      Item curItem = inner[curIndex];
-      int curHash = hash(curItem.key);
-      if (curHash == curIndex) {
-        return;
+      int curHash = hash(inner[cur].key);
+
+      boolean overflow1 = cur < start;
+      boolean overflow2 = cur < curHash;
+      boolean smaller = curHash <= start;
+
+      if (overflow1 ? (overflow2 && smaller) : (overflow2 || smaller)) {
+        inner[start] = inner[cur];
+        inner[cur] = null;
+        start = cur;
+        cur = getInBoundsIndex(start + 1);
+      } else {
+        cur = getInBoundsIndex(cur + 1);
       }
-
-      int prevIndex = getInBoundsIndex(curIndex - 1);
-      inner[prevIndex] = curItem;
-      inner[curIndex] = null;
-
-      curIndex += 1;
     }
   }
 
@@ -183,17 +158,17 @@ public class HashTable<K extends Comparable<K>, V> {
   private boolean isResizing = false;
 
   @SuppressWarnings("unchecked")
-  private void resizeIfNeeded(int newSize) {
+  private boolean resizeIfNeeded(int newSize) {
     boolean shouldIncreaseSize = newSize > inner.length;
     // Don't decrease capacity to less than 8
     boolean shouldDecreaseSize = newSize < inner.length / 4 && inner.length != 8;
 
     if (!shouldIncreaseSize && !shouldDecreaseSize) {
-      return;
+      return false;
     }
 
     if (isResizing) {
-      return;
+      return false;
     }
     isResizing = true;
 
@@ -212,5 +187,7 @@ public class HashTable<K extends Comparable<K>, V> {
     }
 
     isResizing = false;
+
+    return true;
   }
 }
