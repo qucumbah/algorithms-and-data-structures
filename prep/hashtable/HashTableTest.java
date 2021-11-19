@@ -1,9 +1,15 @@
 package prep.hashtable;
 
+import java.util.function.Supplier;
+
 import prep.Test;
 
 public class HashTableTest extends Test {
+  private Supplier<HashTable<Integer, Integer>> hashTableConstructor;
+
   public void runTests() {
+    hashTableConstructor = HashTableLinearProbing::new;
+
     runTest(this::test1, "Capacity, size, set, get, remove");
     runTest(this::test2, "Linear probing removing 1");
     runTest(this::test3, "Linear probing removing 2");
@@ -21,7 +27,7 @@ public class HashTableTest extends Test {
   }
 
   private void test1() {
-    var hashtable = new HashTable<Integer, Integer>();
+    HashTable<Integer, Integer> hashtable = hashTableConstructor.get();
     assertEquals(hashtable.getCapacity(), 8, "HashTable capacity should be 8 initially");
     assertEquals(hashtable.getSize(), 0, "HashTable size should be 0 initially");
 
@@ -68,7 +74,7 @@ public class HashTableTest extends Test {
   }
 
   private void test2() {
-    var hashtable = new HashTable<Integer, Integer>();
+    HashTable<Integer, Integer> hashtable = hashTableConstructor.get();
 
     hashtable.set(0, 0);
 
@@ -93,7 +99,7 @@ public class HashTableTest extends Test {
   }
 
   private void test3() {
-    var hashtable = new HashTable<Integer, Integer>();
+    HashTable<Integer, Integer> hashtable = hashTableConstructor.get();
 
     hashtable.set(0, 0);
     hashtable.set(1, 1);
@@ -105,29 +111,29 @@ public class HashTableTest extends Test {
   }
 
   private void test4() {
-    var hashtable3 = new HashTable<Integer, Integer>();
+    HashTable<Integer, Integer> hashtable = hashTableConstructor.get();
 
-    hashtable3.set(0, 0);
-    hashtable3.set(1, 1);
-    hashtable3.set(7, 7);
-    hashtable3.set(15, 15);
+    hashtable.set(0, 0);
+    hashtable.set(1, 1);
+    hashtable.set(7, 7);
+    hashtable.set(15, 15);
 
-    assertEquals(hashtable3.getSize(), 4, "Hash table should have 4 elements");
-    assertEquals(hashtable3.get(0), 0, "Hash table elements should be correct");
-    assertEquals(hashtable3.get(1), 1, "Hash table elements should be correct");
-    assertEquals(hashtable3.get(7), 7, "Hash table elements should be correct");
-    assertEquals(hashtable3.get(15), 15, "Hash table elements should be correct");
+    assertEquals(hashtable.getSize(), 4, "Hash table should have 4 elements");
+    assertEquals(hashtable.get(0), 0, "Hash table elements should be correct");
+    assertEquals(hashtable.get(1), 1, "Hash table elements should be correct");
+    assertEquals(hashtable.get(7), 7, "Hash table elements should be correct");
+    assertEquals(hashtable.get(15), 15, "Hash table elements should be correct");
 
-    hashtable3.remove(7);
+    hashtable.remove(7);
 
-    assertEquals(hashtable3.getSize(), 3, "Hash table should have 3 elements");
-    assertEquals(hashtable3.get(0), 0, "Hash table elements should be correct");
-    assertEquals(hashtable3.get(1), 1, "Hash table elements should be correct");
-    assertEquals(hashtable3.get(15), 15, "Hash table elements should be correct");
+    assertEquals(hashtable.getSize(), 3, "Hash table should have 3 elements");
+    assertEquals(hashtable.get(0), 0, "Hash table elements should be correct");
+    assertEquals(hashtable.get(1), 1, "Hash table elements should be correct");
+    assertEquals(hashtable.get(15), 15, "Hash table elements should be correct");
   }
 
   private void test5() {
-    var hashtable = new HashTable<Integer, Integer>();
+    HashTable<Integer, Integer> hashtable = hashTableConstructor.get();
 
     hashtable.set(6, 6);
     hashtable.set(14, 14);
@@ -143,7 +149,7 @@ public class HashTableTest extends Test {
   }
 
   private void test6() {
-    var hashtable = new HashTable<Integer, Integer>();
+    HashTable<Integer, Integer> hashtable = hashTableConstructor.get();
 
     hashtable.set(6, 6);
     hashtable.set(7, 7);
@@ -157,7 +163,7 @@ public class HashTableTest extends Test {
   }
 
   private void test7() {
-    var hashtable = new HashTable<Integer, Integer>();
+    HashTable<Integer, Integer> hashtable = hashTableConstructor.get();
 
     hashtable.set(6, 6);
     hashtable.set(14, 14);
@@ -226,7 +232,7 @@ public class HashTableTest extends Test {
   }
 
   private boolean randomTest(Test test) {
-    var hashtable = new HashTable<Integer, Integer>();
+    HashTable<Integer, Integer> hashtable = hashTableConstructor.get();
 
     var addedElements = new java.util.HashSet<Integer>();
 
