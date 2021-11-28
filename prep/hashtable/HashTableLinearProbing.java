@@ -1,11 +1,5 @@
 package prep.hashtable;
 
-/**
- * Hash table with linear probing
- *
- * Other ideas:
- * 1. Chaining
- */
 public class HashTableLinearProbing<K extends Comparable<K>, V> implements HashTable<K, V> {
   private class Item {
     public K key;
@@ -25,14 +19,17 @@ public class HashTableLinearProbing<K extends Comparable<K>, V> implements HashT
     inner = new HashTableLinearProbing.Item[8];
   }
 
+  @Override
   public int getSize() {
     return size;
   }
 
+  @Override
   public int getCapacity() {
     return inner.length;
   }
 
+  @Override
   public void set(K key, V value) {
     // Increase capacity just in case the internall array is full
     // This will be for nothing if we replace existing key, but if we don't do that we'll have to
@@ -66,6 +63,7 @@ public class HashTableLinearProbing<K extends Comparable<K>, V> implements HashT
     }
   }
 
+  @Override
   public V get(K key) {
     int hashValue = hash(key);
     int position = hashValue;
@@ -86,6 +84,7 @@ public class HashTableLinearProbing<K extends Comparable<K>, V> implements HashT
     }
   }
 
+  @Override
   public V remove(K key) {
     // Overview:
     // Go to the element's position and start going forward until we find the right element
