@@ -61,19 +61,23 @@ public class BinarySearchTree<T extends Comparable<T>> implements Iterable<T> {
   }
 
   public boolean contains(T valueToFind) {
-    return contains(head, valueToFind);
+    return get(head, valueToFind) != null;
   }
-  private boolean contains(TreeNode root, T valueToFind) {
+
+  public T get(T valueToFind) {
+    return get(head, valueToFind);
+  }
+  private T get(TreeNode root, T valueToFind) {
     if (root == null) {
-      return false;
+      return null;
     }
 
     if (valueToFind.compareTo(root.value) < 0) {
-      return contains(root.left, valueToFind);
+      return get(root.left, valueToFind);
     } else if (valueToFind.compareTo(root.value) > 0) {
-      return contains(root.right, valueToFind);
+      return get(root.right, valueToFind);
     } else {
-      return true;
+      return root.value;
     }
   }
 
