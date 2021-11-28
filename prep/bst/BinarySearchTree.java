@@ -1,9 +1,10 @@
 package prep.bst;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class BinarySearchTree<T extends Comparable<T>> {
+public class BinarySearchTree<T extends Comparable<T>> implements Iterable<T> {
   private class TreeNode {
     public T value;
     public TreeNode left;
@@ -166,5 +167,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     return getMin(root.right);
+  }
+
+  @Override
+  public Iterator<T> iterator() {
+    return inorder().iterator();
   }
 }
