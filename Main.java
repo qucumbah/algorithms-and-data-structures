@@ -1,7 +1,7 @@
-import prep.hashtable.HashTableTest;
+import prep.bst.BinarySearchTreeTest;
 
 public class Main {
   public static void main(String[] args) {
-    new HashTableTest().runTests();
+    new BinarySearchTreeTest().runTests();
   }
 }
