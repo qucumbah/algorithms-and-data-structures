@@ -54,7 +54,13 @@ public class HashTableChaining<K extends Comparable<K>, V> implements HashTable<
       bst = new BinarySearchTree<Item>();
     }
 
-    bst.insert(new Item(key, value));
+    var blankItem = new Item(key, value);
+
+    if (!bst.contains(blankItem)) {
+      size += 1;
+    }
+
+    bst.insert(blankItem);
 
     inner.set(hashValue, bst);
   }
@@ -68,7 +74,12 @@ public class HashTableChaining<K extends Comparable<K>, V> implements HashTable<
       return null;
     }
 
-    return bst.get(new Item(key, null)).value;
+    Item result = bst.get(new Item(key, null));
+    if (result == null) {
+      return null;
+    }
+
+    return result.value;
   }
 
   @Override
@@ -81,7 +92,14 @@ public class HashTableChaining<K extends Comparable<K>, V> implements HashTable<
     }
 
     Item result = bst.get(new Item(key, null));
+    if (result == null) {
+      return null;
+    }
+
     bst.delete(result);
+    size -= 1;
+
+    resizeIfNeeded(size);
 
     return result.value;
   }

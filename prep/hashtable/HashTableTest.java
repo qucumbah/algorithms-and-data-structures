@@ -8,7 +8,7 @@ public class HashTableTest extends Test {
   private Supplier<HashTable<Integer, Integer>> hashTableConstructor;
 
   public void runTests() {
-    hashTableConstructor = HashTableLinearProbing::new;
+    hashTableConstructor = HashTableChaining::new;
 
     runTest(this::test1, "Capacity, size, set, get, remove");
     runTest(this::test2, "Linear probing removing 1");
