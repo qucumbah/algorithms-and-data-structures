@@ -29,6 +29,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements Iterable<T> {
       where.left = insert(valueToInsert, where.left);
     } else if (valueToInsert.compareTo(where.value) > 0) {
       where.right = insert(valueToInsert, where.right);
+    } else {
+      where.value = valueToInsert;
     }
 
     return where;
