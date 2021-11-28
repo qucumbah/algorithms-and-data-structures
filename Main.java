@@ -1,7 +1,7 @@
-import prep.hashtable.HashTableTest;
+import prep.karprabin.KarpRabinTest;
 
 public class Main {
   public static void main(String[] args) {
-    new HashTableTest().runTests();
+    new KarpRabinTest().runTests();
   }
 }
