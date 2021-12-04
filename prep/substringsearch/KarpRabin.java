@@ -1,6 +1,6 @@
-package prep.karprabin;
+package prep.substringsearch;
 
-public class KarpRabin {
+public class KarpRabin implements SearchAlgorithm {
   private int base;
   private int mod;
 
@@ -9,6 +9,7 @@ public class KarpRabin {
     this.mod = mod;
   }
 
+  @Override
   public int find(String string, String text) {
     if (string.length() == 0) {
       return 0;
@@ -35,7 +36,7 @@ public class KarpRabin {
 
       if (i >= string.length() - 1) {
         int start = i - string.length() + 1;
-        if (stringHash == rollingHash && compare(string, text, start)) {
+        if (stringHash == rollingHash && SearchAlgorithm.compare(string, text, start)) {
           return start;
         }
       }
@@ -44,39 +45,8 @@ public class KarpRabin {
     return -1;
   }
 
-  public int naiveSearch(String string, String text) {
-    if (string.length() == 0) {
-      return 0;
-    }
-
-    if (string.length() > text.length()) {
-      return -1;
-    }
-
-    for (int i = 0; i < text.length() - string.length() + 1; i += 1) {
-      boolean error = false;
-      for (int j = 0; j < string.length(); j += 1) {
-        if (text.charAt(i + j) != string.charAt(j)) {
-          error = true;
-          break;
-        }
-      }
-
-      if (!error) {
-        return i;
-      }
-    }
-
-    return -1;
-  }
-
-  public boolean compare(String string, String text, int from) {
-    for (int i = 0; i < string.length(); i += 1) {
-      if (string.charAt(i) != text.charAt(from + i)) {
-        return false;
-      }
-    }
-
-    return true;
+  @Override
+  public String getName() {
+    return "Karp-Rabin";
   }
 }

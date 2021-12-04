@@ -1,7 +1,7 @@
-import prep.karprabin.KarpRabinTest;
+import prep.substringsearch.SearchAlgorithmTest;
 
 public class Main {
   public static void main(String[] args) {
-    new KarpRabinTest().runTests();
+    new SearchAlgorithmTest().runTests();
   }
 }
