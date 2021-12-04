@@ -1,7 +1,7 @@
-import prep.substringsearch.SearchAlgorithmTest;
+import prep.heap.MaxHeapTest;
 
 public class Main {
   public static void main(String[] args) {
-    new SearchAlgorithmTest().runTests();
+    new MaxHeapTest().runTests();
   }
 }
