@@ -10,6 +10,7 @@ public class SearchAlgorithmTest extends Test {
     var algorithms = new ArrayList<SearchAlgorithm>();
     algorithms.add(new NaiveSearch());
     algorithms.add(new KarpRabin(1023, 1000000123));
+    algorithms.add(new KnuthMorrisPratt());
 
     for (SearchAlgorithm algorithm : algorithms) {
       runTest(() -> this.test1(algorithm), algorithm.getName() + " search check");
@@ -57,7 +58,8 @@ public class SearchAlgorithmTest extends Test {
       assertEquals(
         algorithm.find(string, text),
         firstAlgorithmResult,
-        algorithm.getName() + " algorithm gave a different result compared to " + algorithms.get(0).getName());
+        algorithm.getName() + " algorithm gave a different result compared to " + algorithms.get(0).getName()
+      );
     }
 
     if (haveAssertionsFailed()) {
