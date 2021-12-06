@@ -1,7 +1,7 @@
-import prep.heap.MaxHeapTest;
+import prep.sorting.SortingAlgorithmTest;
 
 public class Main {
   public static void main(String[] args) {
-    new MaxHeapTest().runTests();
+    new SortingAlgorithmTest().runTests();
   }
 }
