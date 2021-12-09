@@ -11,6 +11,7 @@ public class SortingAlgorithmTest extends Test {
     var algorithms = new ArrayList<SortingAlgorithm<Integer>>();
     algorithms.add(new HeapSort<Integer>());
     algorithms.add(new QuickSort<Integer>());
+    algorithms.add(new MergeSort<Integer>());
 
     for (SortingAlgorithm<Integer> algorithm : algorithms) {
       runTest(() -> this.test1(algorithm), algorithm.getName() + " check");
@@ -21,6 +22,8 @@ public class SortingAlgorithmTest extends Test {
     }
 
     runTest(() -> this.test3(algorithms), "Generic test 1");
+    runTest(() -> this.test4(algorithms), "Generic test 2");
+    runTest(() -> this.test5(algorithms), "Generic test 3");
   }
 
   private void test1(SortingAlgorithm<Integer> sortingAlgorithm) {
@@ -60,6 +63,40 @@ public class SortingAlgorithmTest extends Test {
 
   private void test3(List<SortingAlgorithm<Integer>> sortingAlgorithms) {
     Integer[] array = new Integer[] { 0, 4, 9, 4 };
+
+    for (SortingAlgorithm<Integer> algorithm : sortingAlgorithms) {
+      Integer[] arrayClone = Arrays.copyOf(array, array.length);
+      algorithm.sort(arrayClone);
+      assertion(
+        isSorted(arrayClone),
+        algorithm.getName()
+        + " failed to sort array "
+        + Arrays.toString(array)
+        + ". Sorting result: "
+        + Arrays.toString(arrayClone)
+      );
+    }
+  }
+
+  private void test4(List<SortingAlgorithm<Integer>> sortingAlgorithms) {
+    Integer[] array = new Integer[] { 5, 5, 3, 1 };
+
+    for (SortingAlgorithm<Integer> algorithm : sortingAlgorithms) {
+      Integer[] arrayClone = Arrays.copyOf(array, array.length);
+      algorithm.sort(arrayClone);
+      assertion(
+        isSorted(arrayClone),
+        algorithm.getName()
+        + " failed to sort array "
+        + Arrays.toString(array)
+        + ". Sorting result: "
+        + Arrays.toString(arrayClone)
+      );
+    }
+  }
+
+  private void test5(List<SortingAlgorithm<Integer>> sortingAlgorithms) {
+    Integer[] array = new Integer[] { 6, 2, 1, 5, 5 };
 
     for (SortingAlgorithm<Integer> algorithm : sortingAlgorithms) {
       Integer[] arrayClone = Arrays.copyOf(array, array.length);
