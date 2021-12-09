@@ -10,6 +10,7 @@ public class SortingAlgorithmTest extends Test {
   public void runTests() {
     var algorithms = new ArrayList<SortingAlgorithm<Integer>>();
     algorithms.add(new HeapSort<Integer>());
+    algorithms.add(new QuickSort<Integer>());
 
     for (SortingAlgorithm<Integer> algorithm : algorithms) {
       runTest(() -> this.test1(algorithm), algorithm.getName() + " check");
@@ -18,6 +19,8 @@ public class SortingAlgorithmTest extends Test {
     for (int i = 1; i <= 10; i += 1) {
       runTest(() -> this.test2(algorithms), "Sorting algorithms random test " + i);
     }
+
+    runTest(() -> this.test3(algorithms), "Generic test 1");
   }
 
   private void test1(SortingAlgorithm<Integer> sortingAlgorithm) {
@@ -40,6 +43,23 @@ public class SortingAlgorithmTest extends Test {
 
   private void test2(List<SortingAlgorithm<Integer>> sortingAlgorithms) {
     Integer[] array = generateRandomArray(10 + (int)(Math.random() * 10), 10);
+
+    for (SortingAlgorithm<Integer> algorithm : sortingAlgorithms) {
+      Integer[] arrayClone = Arrays.copyOf(array, array.length);
+      algorithm.sort(arrayClone);
+      assertion(
+        isSorted(arrayClone),
+        algorithm.getName()
+        + " failed to sort array "
+        + Arrays.toString(array)
+        + ". Sorting result: "
+        + Arrays.toString(arrayClone)
+      );
+    }
+  }
+
+  private void test3(List<SortingAlgorithm<Integer>> sortingAlgorithms) {
+    Integer[] array = new Integer[] { 0, 4, 9, 4 };
 
     for (SortingAlgorithm<Integer> algorithm : sortingAlgorithms) {
       Integer[] arrayClone = Arrays.copyOf(array, array.length);
